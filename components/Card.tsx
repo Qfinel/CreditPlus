@@ -60,6 +60,7 @@ const Description = styled.footer`
   & p {
     display: flex;
     align-items: center;
+    text-align: left;
     color: ${props => props.theme.colors.gray_700};
     font-family: ${props => props.theme.fonts.secondary};
     font-weight: normal;

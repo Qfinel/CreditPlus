@@ -69,6 +69,7 @@ const Option = styled.button<{$isSelected: boolean}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: left;
   padding: 9px 15px;
   color: ${props => (
     props.$isSelected ? props.theme.colors.primary_700
@@ -100,10 +101,21 @@ const Filter = (props: FilterProps) => {
 
   const {filterValue, setFilterValue, setCurrentPage, options} = props
 
+  const handleOptionClick = (option: string) => {
+    setIsOpenDropdown(false);
+    setCurrentPage(1);
+    if (option === options[0]) {
+      setFilterValue("");
+    } else {
+      setFilterValue(option);
+    }
+  };
+
   return (
     <SelectContainer>
       <Select
         $isOpen={isOpenDropdown}
+        onBlur={() => setIsOpenDropdown(false)}
         onClick={() => setIsOpenDropdown(!isOpenDropdown)}>
           {filterValue || options[0]}
         <Image 
@@ -119,13 +131,7 @@ const Filter = (props: FilterProps) => {
           {options.map((option, index) => (
             <Option $isSelected={option === filterValue} 
               key={index}
-              onClick={() => {
-                setIsOpenDropdown(false)
-                setCurrentPage(1)
-                if (index === 0)
-                  setFilterValue("")
-                else
-                  setFilterValue(option)}}>
+              onClick={() => handleOptionClick(option)}>
                 {option}
               {(filterValue === option) &&
                 <Image 
