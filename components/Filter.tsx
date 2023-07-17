@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import { mediumText } from '@/styles/Text'
@@ -18,6 +18,7 @@ const Select = styled.button<{$isOpen: boolean}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: left;
   border-radius: 8px;
   border: ${props => (
     props.$isOpen
@@ -98,31 +99,47 @@ interface FilterProps {
 const Filter = (props: FilterProps) => {
 
   const [isOpenDropdown, setIsOpenDropdown] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const {filterValue, setFilterValue, setCurrentPage, options} = props
 
-  const handleOptionClick = (option: string) => {
-    setIsOpenDropdown(false);
-    setCurrentPage(1);
-    if (option === options[0]) {
-      setFilterValue("");
-    } else {
-      setFilterValue(option);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenDropdown(false);
+      }
+    };
 
-  const handleBlur = () => {
-    setTimeout(() => {
-      setIsOpenDropdown(false);
-    }, 100);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, []);
+
+  const handleOptionClick = (option: string) => {
+    setIsOpenDropdown(false)
+    setCurrentPage(1)
+    if (option === options[0]) {
+      setFilterValue("")
+    } else {
+      setFilterValue(option)
+    }
+  }
+
+  const handleSelectClick = () => {
+    setIsOpenDropdown(prevIsOpen => !prevIsOpen);
   };
 
   return (
-    <SelectContainer>
+    <SelectContainer ref={dropdownRef}>
       <Select
         $isOpen={isOpenDropdown}
-        onBlur={handleBlur}
-        onClick={() => setIsOpenDropdown(!isOpenDropdown)}>
+        onClick={handleSelectClick}
+        >
           {filterValue || options[0]}
         <Image 
           src="/angle-down.svg"
