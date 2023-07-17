@@ -33,7 +33,7 @@ const StyledLink = styled.a`
   padding-right: 22px;
   background: url('/arrow-up-right.png') no-repeat right;
   background-size: 10px;
-  min-height: 24px;
+  min-height: 16px;
   cursor: pointer;
 
   &:hover p {
