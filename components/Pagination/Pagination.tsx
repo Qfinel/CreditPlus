@@ -45,6 +45,12 @@ const Pagination = () => {
   const [pagesToShow, setPagesToShow] = useState<number>(3)
 
   useEffect(() => {
+  
+    if (window.innerWidth < 650)
+        setPagesToShow(2)
+    else
+        setPagesToShow(3)
+
     const handleResize = () => {
       if (window.innerWidth < 650)
         setPagesToShow(2)
