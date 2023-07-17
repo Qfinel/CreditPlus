@@ -1,11 +1,8 @@
 'use client'
 
-import { GlobalStyle } from "@/styles/GlobalStyle"
-import Theme from "@/components/Theme"
 import styled from 'styled-components'
-import Header from "@/components/Header"
-import List from "@/components/List"
-import Pagination from "@/components/Pagination/Pagination"
+import { GlobalStyle } from "@/styles/GlobalStyle"
+import { Theme, List, Header, Pagination } from '@/components'
 import { AppContextProvider } from "@/context/AppContext"
 
 const MainContainer = styled.main`

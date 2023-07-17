@@ -11,7 +11,7 @@ interface DepartmentResponse {
 }
 
 export const GET = async () => {
-    const GET_DEPARTMENTS = gql`
+    const get_departments = gql`
     query getDepartments {
         jobCollection  {
             items {
@@ -30,7 +30,7 @@ export const GET = async () => {
 
     try {
 
-        const result = await request(url, GET_DEPARTMENTS) as DepartmentResponse
+        const result = await request(url, get_departments) as DepartmentResponse
 
         const departments = result.jobCollection.items.map((item) => (
             item.department.title

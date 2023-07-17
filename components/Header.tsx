@@ -1,8 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import styled from 'styled-components'
 import Filter from './Filter'
 import { mediumText, smallText } from '@/styles/Text'
-import { AppContext, AppContextType } from '@/context/AppContext'
+import { AppContext } from '@/context/AppContext'
+import { AppContextType } from '@/context/types'
+import useApiOptions from '@/hooks/useApiOptions'
 
 const HeaderContainer = styled.header`
     background-color: ${props => props.theme.colors.gray_75};
@@ -85,41 +87,14 @@ const Flex = styled.div`
 
 const Header = () => {
 
-  const {selectedCity, setSelectedCity,
-    selectedDepartment, setSelectedDepartment,
-    selectedLevel, setSelectedLevel,
+  const {state, setSelectedCity,
+    setSelectedDepartment,
+    setSelectedLevel,
     setCurrentPage} = useContext(AppContext) as AppContextType
 
-  const [levels, setLevels] = useState<string[]>(['Erfahrungslevel'])
-  const [departments, setDepartments] = useState<string[]>(['Bereich'])
-  const [cities, setCities] = useState<string[]>(['Stadt'])
-
-  useEffect(() => {
-    const getFilterOptions = async () => {
-        try {
-            const levelsResult = await fetch('/api/levels', {method: 'GET'})
-            const departmentsResult = await fetch('/api/departments', {method: 'GET'})
-            const citiesResult = await fetch('/api/cities', {method: 'GET'})
-
-            const levelsArr = await levelsResult.json()
-            const departmentsArr = await departmentsResult.json()
-            const citiesArr = await citiesResult.json()
-
-            levelsArr.unshift('Erfahrungslevel')
-            departmentsArr.unshift('Bereich')
-            citiesArr.unshift('Stadt')
-
-            setLevels(levelsArr)
-            setDepartments(departmentsArr)
-            setCities(citiesArr)
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    getFilterOptions()
-  }, [])
+  const levels = useApiOptions('/api/levels', 'Erfahrungslevel');
+  const departments = useApiOptions('/api/departments', 'Bereich');
+  const cities = useApiOptions('/api/cities', 'Stadt');
 
   return (
     <HeaderContainer>
@@ -131,19 +106,19 @@ const Header = () => {
         </Heading>
         <Flex>
             <Filter
-                filterValue={selectedDepartment}
+                filterValue={state.selectedDepartment}
                 setFilterValue={setSelectedDepartment}
                 setCurrentPage={setCurrentPage}
                 options={departments}
                 />
             <Filter
-                filterValue={selectedCity}
+                filterValue={state.selectedCity}
                 setFilterValue={setSelectedCity}
                 setCurrentPage={setCurrentPage}
                 options={cities}
                 />
             <Filter
-                filterValue={selectedLevel}
+                filterValue={state.selectedLevel}
                 setFilterValue={setSelectedLevel}
                 setCurrentPage={setCurrentPage}
                 options={levels}

@@ -1,13 +1,6 @@
 import { smallText } from '@/styles/Text'
 import styled from 'styled-components'
 
-interface RenderPageProps {
-  pagesToShow: number;
-  currentPage: number;
-  totalPages: number;
-  setCurrentPage: (page: number) => void;
-}
-
 const PageButton = styled.div<{$isSelected: boolean}>`
   ${smallText}
 
@@ -32,6 +25,13 @@ const PageButton = styled.div<{$isSelected: boolean}>`
     color: ${props => props.theme.colors.primary_base};
   }
 `
+
+interface RenderPageProps {
+  pagesToShow: number;
+  currentPage: number;
+  totalPages: number;
+  setCurrentPage: (page: number) => void;
+}
 
 const RenderPageNumbers = (props: RenderPageProps) => {
 

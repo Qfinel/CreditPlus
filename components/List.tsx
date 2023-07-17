@@ -1,7 +1,9 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Card from './Card'
-import { AppContext, AppContextType } from '@/context/AppContext'
+import LoadingSpinner from './LoadingSpinner'
+import { AppContext } from '@/context/AppContext'
+import { AppContextType } from '@/context/types'
 import { mediumText } from '@/styles/Text'
 
 const FlexList = styled.div`
@@ -25,15 +27,19 @@ const ErrorText = styled.p`
 
 const List = () => {
 
-  const { jobs, setJobs,
-    setTotalPages,
-    selectedCity,
+  const { state, setJobs, setTotalPages }
+    = useContext(AppContext) as AppContextType
+
+  const { jobs, selectedCity,
     selectedDepartment,
     selectedLevel,
-    currentPage } = useContext(AppContext) as AppContextType
+    currentPage } = state
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    const getJobs = async () => {
+    const fetchJobs = async () => {
+      setIsLoading(true)
       try {
         const response = await fetch('/api/jobs', {
             method: 'POST',
@@ -56,10 +62,12 @@ const List = () => {
         }
       } catch (error) {
         console.log(error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    getJobs()
+    fetchJobs()
   }, [selectedCity, selectedDepartment, selectedLevel])
 
   const startIndex = (currentPage - 1) * 5
@@ -70,15 +78,16 @@ const List = () => {
   return (
     <FlexList>
         {jobs.length > 0
-          ?  currentJobs.map((job) => (
+          ? currentJobs.map((job) => (
                 <Card 
                     key={job.id}
                     category={job.department}
                     title={job.title}
                     time={job.types.join('/')}
                     city={job.cities.join(', ')}/>
-            ))
-          :  (
+          )) : isLoading ? (
+            <LoadingSpinner />
+          ) : (
             <ErrorText>
                 No Jobs Found
             </ErrorText>

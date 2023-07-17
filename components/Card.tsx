@@ -3,13 +3,6 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 
-interface CardProps {
-  category: string,
-  title: string,
-  city: string,
-  time: string
-}
-
 const CardContainer = styled.div`
   position: relative;
   width: 100%;
@@ -62,7 +55,7 @@ const Title = styled.h2`
 const Description = styled.footer`
   ${mediumText}
   display: flex;
-  gap: 24px;
+  width: 100%;
 
   & p {
     display: flex;
@@ -71,6 +64,7 @@ const Description = styled.footer`
     font-family: ${props => props.theme.fonts.secondary};
     font-weight: normal;
     padding-left: 24px;
+    margin-right: 24px;
   }
 
   & p:first-child {
@@ -83,6 +77,13 @@ const Description = styled.footer`
     background-size: 18px;
   }
 `
+
+interface CardProps {
+  category: string,
+  title: string,
+  city: string,
+  time: string
+}
 
 const Card = (props: CardProps) => {
 

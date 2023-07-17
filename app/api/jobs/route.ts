@@ -30,9 +30,8 @@ interface JobResponse {
     }
 }
 
-
 export const POST = async (req: Request) => {
-    const GET_JOBS = gql`
+    const get_jobs = gql`
     query getJobs ($limit: Int, $where: JobFilter) {
         jobCollection (
             where: $where,
@@ -91,7 +90,7 @@ export const POST = async (req: Request) => {
 
     try {
 
-        const result = await request(url, GET_JOBS, variables) as JobResponse
+        const result = await request(url, get_jobs, variables) as JobResponse
 
         const structuredJobs = result.jobCollection.items.map((item) => (
             {

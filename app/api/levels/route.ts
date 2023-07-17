@@ -13,7 +13,7 @@ interface LevelsResponse {
 }
 
 export const GET = async () => {
-    const GET_LEVELS = gql`
+    const get_levels = gql`
     query getLevels {
         jobCollection  {
             items {
@@ -34,7 +34,7 @@ export const GET = async () => {
 
     try {
 
-        const result = await request(url, GET_LEVELS) as LevelsResponse
+        const result = await request(url, get_levels) as LevelsResponse
 
         const levels = result.jobCollection.items.map((item) => (
             item.levelsCollection.items

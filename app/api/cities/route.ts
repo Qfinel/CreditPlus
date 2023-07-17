@@ -13,7 +13,7 @@ interface CitiesResponse {
 }
 
 export const GET = async () => {
-    const GET_CITIES = gql`
+    const get_cities = gql`
     query getCities {
         jobCollection  {
             items {
@@ -34,7 +34,7 @@ export const GET = async () => {
 
     try {
 
-        const result = await request(url, GET_CITIES) as CitiesResponse
+        const result = await request(url, get_cities) as CitiesResponse
 
         const cities = result.jobCollection.items.map((item) => (
             item.locationsCollection.items

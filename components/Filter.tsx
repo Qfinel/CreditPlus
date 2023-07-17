@@ -94,8 +94,11 @@ interface FilterProps {
   options: string[]
 }
 
-const Filter = ({filterValue, setFilterValue, setCurrentPage, options}: FilterProps) => {
+const Filter = (props: FilterProps) => {
+
   const [isOpenDropdown, setIsOpenDropdown] = useState<boolean>(false)
+
+  const {filterValue, setFilterValue, setCurrentPage, options} = props
 
   return (
     <SelectContainer>
@@ -113,8 +116,8 @@ const Filter = ({filterValue, setFilterValue, setCurrentPage, options}: FilterPr
  
       {isOpenDropdown &&
         <Dropdown>
-          {options.map((opt, index) => (
-            <Option $isSelected={opt === filterValue} 
+          {options.map((option, index) => (
+            <Option $isSelected={option === filterValue} 
               key={index}
               onClick={() => {
                 setIsOpenDropdown(false)
@@ -122,9 +125,9 @@ const Filter = ({filterValue, setFilterValue, setCurrentPage, options}: FilterPr
                 if (index === 0)
                   setFilterValue("")
                 else
-                  setFilterValue(opt)}}>
-                {opt}
-              {(filterValue === opt) &&
+                  setFilterValue(option)}}>
+                {option}
+              {(filterValue === option) &&
                 <Image 
                   src="/check.png"
                   alt="checkmark"

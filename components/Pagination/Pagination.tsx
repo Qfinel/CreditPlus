@@ -1,8 +1,9 @@
 import { smallText } from '@/styles/Text'
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import RenderPageNumbers from './RenderPageNumbers'
-import { AppContext, AppContextType } from '@/context/AppContext'
+import { AppContext } from '@/context/AppContext'
+import { AppContextType } from '@/context/types'
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const PageNavigation = styled.div`
 
 const Pagination = () => {
 
-  const {currentPage, setCurrentPage, totalPages} = useContext(AppContext) as AppContextType
+  const {state, setCurrentPage} = useContext(AppContext) as AppContextType
 
   const [pagesToShow, setPagesToShow] = useState<number>(3)
 
@@ -63,26 +64,26 @@ const Pagination = () => {
       <ArrowButton
         $isLeft={true}
         onClick={() => {
-          if (currentPage !== 1)
-            setCurrentPage(currentPage - 1);
+          if (state.currentPage !== 1)
+            setCurrentPage(state.currentPage - 1);
         }}>
           <p>
             Vorherige
           </p>
       </ArrowButton>
       <PageNavigation>
-          <RenderPageNumbers 
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPages}
-            pagesToShow={pagesToShow}
-          />
+        <RenderPageNumbers 
+          currentPage={state.currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={state.totalPages}
+          pagesToShow={pagesToShow}
+        />
       </PageNavigation>
       <ArrowButton
         $isLeft={false}
         onClick={() => {
-          if (currentPage !== totalPages)
-            setCurrentPage(currentPage + 1);
+          if (state.currentPage !== state.totalPages)
+            setCurrentPage(state.currentPage + 1);
         }}>
           <p>
             Nächste
