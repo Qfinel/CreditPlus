@@ -111,11 +111,17 @@ const Filter = (props: FilterProps) => {
     }
   };
 
+  const handleBlur = () => {
+    setTimeout(() => {
+      setIsOpenDropdown(false);
+    }, 100);
+  };
+
   return (
     <SelectContainer>
       <Select
         $isOpen={isOpenDropdown}
-        onBlur={() => setIsOpenDropdown(false)}
+        onBlur={handleBlur}
         onClick={() => setIsOpenDropdown(!isOpenDropdown)}>
           {filterValue || options[0]}
         <Image 
